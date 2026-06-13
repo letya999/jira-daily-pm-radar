@@ -5,9 +5,7 @@ description: Use this skill when the user wants to understand what changed in Ji
 
 # Jira Daily PM Radar
 
-This skill helps a project manager quickly understand Jira state every day.
-
-It answers:
+This skill answers daily PM questions:
 
 1. What changed since yesterday?
 2. Where is the current sprint stuck?
@@ -16,51 +14,67 @@ It answers:
 5. What in the backlog smells?
 6. What should the PM do today?
 
-## Install & Run
+## Prerequisites
 
-This skill runs from the local project checkout via `uv`. The package is NOT published to npm or PyPI.
+Only `uv` is required. Install it once:
+- Linux/macOS: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- Windows: `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"`
 
-**Running the MCP server:**
-```text
-uv run --directory <PROJECT_DIR> --extra mcp jira-radar-mcp
+Verify: `uv --version`
+
+## Running CLI
+
+Run directly via uvx - no clone needed:
+
+```bash
+# Daily report (mock mode, no real Jira needed)
+uvx --from git+https://github.com/letya999/jira-daily-pm-radar.git \
+  jira-radar daily --project DEMO --mock --out reports/
+
+# Daily report (real Jira)
+uvx --from git+https://github.com/letya999/jira-daily-pm-radar.git \
+  jira-radar daily --project PROJ --board-id 123 --since yesterday --out reports/
+
+# Check connectivity
+uvx --from git+https://github.com/letya999/jira-daily-pm-radar.git \
+  jira-radar doctor
 ```
 
-**Running CLI:**
-```text
-uv run --directory <PROJECT_DIR> jira-radar daily --project <PROJECT_KEY> --board-id <BOARD_ID> --since yesterday --out reports/
-```
-
-## Agent Installation
-
-If you are an AI agent configuring this skill, use the following definition path:
-```text
-$skill-installer install https://github.com/letya999/jira-daily-pm-radar/tree/main/skills/jira-daily-pm-radar
-```
+Environment variables (set before calling or pass via shell):
+- `JIRA_BASE_URL` - https://your-domain.atlassian.net
+- `JIRA_EMAIL` - your Atlassian email
+- `JIRA_API_TOKEN` - your Jira API token
 
 ## MCP client config
 
-Use `uv run` with `--directory` pointing to the project checkout.
-
-Example config entry (for `mcp_config.json`):
 ```json
 {
-  "command": "<path_to_uv_exe>",
-  "args": ["run", "--directory", "<PROJECT_DIR>", "--extra", "mcp", "jira-radar-mcp"],
-  "env": {
-    "JIRA_BASE_URL": "<YOUR_JIRA_URL>",
-    "JIRA_EMAIL": "<YOUR_JIRA_EMAIL>",
-    "JIRA_API_TOKEN": "<YOUR_JIRA_API_TOKEN>"
+  "mcpServers": {
+    "jira-daily-pm-radar": {
+      "command": "uvx",
+      "args": [
+        "--from", "git+https://github.com/letya999/jira-daily-pm-radar.git[mcp]",
+        "jira-radar-mcp"
+      ],
+      "env": {
+        "JIRA_BASE_URL": "<YOUR_JIRA_URL>",
+        "JIRA_EMAIL": "<YOUR_JIRA_EMAIL>",
+        "JIRA_API_TOKEN": "<YOUR_JIRA_API_TOKEN>"
+      }
+    }
   }
 }
 ```
 
-Do NOT use `npx` or `uvx` — the package is not published to registries.
+First run downloads and caches the package. Subsequent runs use the cache.
 
+## Installing this skill
 
-Credential sources (environment variables):
-- `JIRA_BASE_URL`: The base URL of your Jira instance.
-- `JIRA_EMAIL`: The email of the Atlassian account.
-- `JIRA_API_TOKEN`: The API token for Jira.
+```bash
+npx skills add -g letya999/jira-daily-pm-radar
+```
+
+After install, ensure `uv` is available (see Prerequisites). No other setup required.
 
 ## Recommended operator flow
 
@@ -83,14 +97,14 @@ Read `references/00-agent-navigation.md` first.
 
 ## Preferred execution
 
-Use CLI mode for batch reports.
+Use CLI via uvx for batch reports:
 
 ```bash
-jira-radar daily --project <PROJECT_KEY> --board-id <BOARD_ID> --since yesterday --out reports/
+uvx --from git+https://github.com/letya999/jira-daily-pm-radar.git \
+  jira-radar daily --project <PROJECT_KEY> --board-id <BOARD_ID> --since yesterday --out reports/
 ```
 
 Then read generated files in this order:
-
 1. `reports/<run>/summary.md`
 2. `reports/<run>/action-list.json`
 3. `reports/<run>/signals.json`

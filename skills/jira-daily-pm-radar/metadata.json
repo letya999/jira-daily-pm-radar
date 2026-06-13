@@ -1,0 +1,8 @@
+{
+  "name": "jira-daily-pm-radar",
+  "description": "Daily PM radar for Jira: changes, stuck sprint, backlog smells, poor issue hygiene, HTML reports.",
+  "version": "0.1.0",
+  "author": "Artem Letyushev",
+  "repository": "https://github.com/letya999/jira-daily-pm-radar",
+  "agents": ["claude-code", "gemini", "opencode", "cursor", "codex"]
+}

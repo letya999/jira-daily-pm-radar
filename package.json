@@ -1,7 +1,7 @@
 {
   "name": "jira-daily-pm-radar-mcp",
   "version": "0.1.0",
-  "description": "Daily PM radar for Jira: changes, stuck sprint work, backlog smells, poor issue hygiene, and HTML reports.",
+  "description": "Daily PM radar for Jira. Local-only installation via installer scripts. Not for PyPI/npm registries.",
   "bin": {
     "jira-radar-mcp": "./bin/mcp-launcher.js"
   },
