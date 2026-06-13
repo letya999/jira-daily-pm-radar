@@ -3,7 +3,7 @@ const { spawnSync } = require('child_process');
 
 console.error("Starting Jira Daily PM Radar MCP via uvx...");
 
-const result = spawnSync('npx', ['-y', 'uvx', 'jira-daily-pm-radar', 'mcp'], {
+const result = spawnSync('uvx', ['jira-daily-pm-radar', 'mcp'], {
   stdio: 'inherit',
   shell: true
 });

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 from pathlib import Path
 
 from jira_daily_pm_radar.analyzer import RadarAnalyzer
@@ -10,6 +11,29 @@ from jira_daily_pm_radar.jira_client import JiraClient, JiraConfigError
 from jira_daily_pm_radar.mock_data import load_mock_payload
 from jira_daily_pm_radar.models import Issue, ReportData, Scope
 from jira_daily_pm_radar.normalizer import normalize_issue
+
+_SINCE_MAP = {
+    "yesterday": "-1d",
+    "today": "-0d",
+    "week": "-7d",
+    "last week": "-7d",
+    "month": "-30d",
+    "last month": "-30d",
+}
+
+
+def _since_to_jql(since: str) -> str:
+    normalized = since.strip().lower()
+    if normalized in _SINCE_MAP:
+        return _SINCE_MAP[normalized]
+    # pass through Jira-native relative values like -2d, -14d
+    if re.match(r"^-?\d+[dwhm]$", normalized):
+        return normalized
+    # pass through date strings like 2024-01-01
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", normalized):
+        return f'"{since}"'
+    return "-1d"
+
 
 DEFAULT_FIELDS = [
     "summary",
@@ -132,7 +156,8 @@ class RadarService:
             jql_next = f'project = "{project}" AND sprint in futureSprints() AND statusCategory != Done ORDER BY Rank ASC'
             jql_backlog = f'project = "{project}" AND sprint is EMPTY AND statusCategory != Done ORDER BY Rank ASC'
             # Jira JQL supports relative forms like -1d; we keep user value if it is already valid JQL-like.
-            jql_updated = f'project = "{project}" AND updated >= -1d ORDER BY updated DESC'
+            jql_since = _since_to_jql(since)
+            jql_updated = f'project = "{project}" AND updated >= {jql_since} ORDER BY updated DESC'
             current, next_sprint, backlog, updated = await asyncio.gather(
                 client.search_issues(jql_current, fields=DEFAULT_FIELDS, max_results=200),
                 client.search_issues(jql_next, fields=DEFAULT_FIELDS, max_results=200),

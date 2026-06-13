@@ -52,9 +52,9 @@ Common launcher configurations:
 
 
 Credential sources (environment variables):
-- `JIRA_URL`: The base URL of your Jira instance.
+- `JIRA_BASE_URL`: The base URL of your Jira instance.
 - `JIRA_EMAIL`: The email of the Atlassian account.
-- `JIRA_TOKEN`: The API token for Jira.
+- `JIRA_API_TOKEN`: The API token for Jira.
 
 ## Recommended operator flow
 
@@ -105,12 +105,20 @@ If CLI and MCP are both available, prefer CLI for daily/sprint/backlog reports a
 
 ## Final response
 
-Return a short PM-readable answer:
+Read `summary.md` from the report directory and deliver it **as-is** to the PM — do not rephrase, do not summarize the summary.
 
-- what changed
-- what is stuck
-- what smells
-- what is poorly described
-- what to do today
-- path to generated HTML report
-- data limitations
+Then add a brief natural-language lead-in in the same language the PM used, for example:
+
+> «Проверил Jira по PROJECT. Вот что нашёл:»
+
+Highlight to the PM explicitly:
+- any CRITICAL signals (high-priority issues with no activity, high-priority stale backlog)
+- tasks stuck in status longer than threshold
+- issues that returned from sprint to backlog
+- new tasks that arrived since yesterday
+- possible unanswered comments
+
+Point the PM to the HTML report for the full picture:
+> «Полный отчёт: <path from summary>»
+
+Do not invent Jira data. Do not omit limitations section.

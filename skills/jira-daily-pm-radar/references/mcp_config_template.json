@@ -7,9 +7,9 @@
         "mcp"
       ],
       "env": {
-        "JIRA_URL": "<YOUR_JIRA_URL>",
+        "JIRA_BASE_URL": "<YOUR_JIRA_URL>",
         "JIRA_EMAIL": "<YOUR_JIRA_EMAIL>",
-        "JIRA_TOKEN": "<YOUR_JIRA_API_TOKEN>"
+        "JIRA_API_TOKEN": "<YOUR_JIRA_API_TOKEN>"
       }
     }
   }

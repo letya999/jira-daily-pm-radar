@@ -50,8 +50,8 @@ def daily(
         service.daily(project=project, board_id=board_id, since=since, out_dir=out, mock=mock)
     )
     html_path = write_report(report, out)
-    console.print(render_summary(report), markup=False)
-    console.print(f"[green]HTML report:[/] {html_path}")
+    summary = render_summary(report).replace("{html_report_path}", str(html_path))
+    console.print(summary, markup=False)
 
 
 @app.command()
@@ -65,8 +65,8 @@ def sprint(
     service = RadarService(Settings())
     report = run(service.sprint(project=project, board_id=board_id, out_dir=out, mock=mock))
     html_path = write_report(report, out)
-    console.print(render_summary(report), markup=False)
-    console.print(f"[green]HTML report:[/] {html_path}")
+    summary = render_summary(report).replace("{html_report_path}", str(html_path))
+    console.print(summary, markup=False)
 
 
 @app.command()
@@ -80,8 +80,8 @@ def backlog(
     service = RadarService(Settings())
     report = run(service.backlog(project=project, board_id=board_id, out_dir=out, mock=mock))
     html_path = write_report(report, out)
-    console.print(render_summary(report), markup=False)
-    console.print(f"[green]HTML report:[/] {html_path}")
+    summary = render_summary(report).replace("{html_report_path}", str(html_path))
+    console.print(summary, markup=False)
 
 
 @app.command(name="issue")
