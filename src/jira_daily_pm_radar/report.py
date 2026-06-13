@@ -27,10 +27,20 @@ def signals_by_scope(signals: list[Signal], scope: Scope) -> list[Signal]:
     return [signal for signal in signals if signal.scope == scope]
 
 
-def _top_keys(signals: list[Signal], limit: int = 8) -> tuple[list[str], int]:
-    keys = [s.issue_key for s in signals if s.issue_key]
-    shown = keys[:limit]
-    rest = len(keys) - len(shown)
+def _issue_link(signal: Signal) -> str:
+    """Render an issue key as `[KEY «summary»](url)` markdown link."""
+    key = signal.issue_key or "?"
+    summary = (signal.evidence.get("summary") or "")[:60]
+    url = signal.evidence.get("url")
+    label = f"{key} «{summary}»" if summary else key
+    if url:
+        return f"[{label}]({url})"
+    return label
+
+
+def _top_keys(signals: list[Signal], limit: int = 8) -> tuple[list[Signal], int]:
+    shown = [s for s in signals if s.issue_key][:limit]
+    rest = max(0, sum(1 for s in signals if s.issue_key) - len(shown))
     return shown, rest
 
 
@@ -38,7 +48,7 @@ def _keys_line(signals: list[Signal], limit: int = 8) -> str:
     shown, rest = _top_keys(signals, limit)
     if not shown:
         return ""
-    line = ", ".join(shown)
+    line = ", ".join(_issue_link(s) for s in shown)
     if rest:
         line += f" (и ещё {rest})"
     return line
@@ -46,6 +56,12 @@ def _keys_line(signals: list[Signal], limit: int = 8) -> str:
 
 def render_summary(report: ReportData) -> str:
     date_str = report.generated_at.strftime("%d.%m.%Y %H:%M")
+    # Build a lookup from issue_key to signal for linked actions
+    _key_to_signal: dict[str, Signal] = {}
+    for sig in report.signals:
+        if sig.issue_key and sig.issue_key not in _key_to_signal:
+            _key_to_signal[sig.issue_key] = sig
+
     lines: list[str] = [
         f"# PM Радар: {report.project} — {date_str}",
         f"Signals: critical={report.critical_count}, warning={report.warning_count}, info={report.info_count}",
@@ -57,15 +73,25 @@ def render_summary(report: ReportData) -> str:
     sprint_sigs = [s for s in report.signals if s.scope == Scope.CURRENT_SPRINT]
     stuck = [s for s in sprint_sigs if s.id in {"stuck_in_status", "todo_after_sprint_started"}]
     no_activity = [s for s in sprint_sigs if s.id == "high_priority_no_recent_activity"]
-    bad_desc = [s for s in sprint_sigs if s.id in {"missing_description", "weak_description", "missing_acceptance_criteria"}]
+    bad_desc = [
+        s
+        for s in sprint_sigs
+        if s.id in {"missing_description", "weak_description", "missing_acceptance_criteria"}
+    ]
 
     if stuck:
-        lines.append(f"Зависшие задачи ({len(stuck)}): {_keys_line(stuck)}")
-        for s in stuck[:5]:
-            days = s.evidence.get("days_in_status") or s.evidence.get("days_after_sprint_start", "?")
-            lines.append(f"  - {s.issue_key}: {s.evidence.get('status', '')} уже {days} дн.")
+        lines.append(f"Зависшие задачи ({len(stuck)}):")
+        for s in stuck[:8]:
+            days = s.evidence.get("days_in_status") or s.evidence.get(
+                "days_after_sprint_start", "?"
+            )
+            lines.append(f"  - {_issue_link(s)}: {s.evidence.get('status', '')} уже {days} дн.")
     if no_activity:
-        lines.append(f"Высокий приоритет без активности ({len(no_activity)}): {_keys_line(no_activity)}")
+        lines.append(f"Высокий приоритет без активности ({len(no_activity)}):")
+        for s in no_activity[:5]:
+            lines.append(
+                f"  - {_issue_link(s)}: {s.evidence.get('priority', '')} — не обновлялась {s.evidence.get('updated_days_ago', '?')} дн."
+            )
     if bad_desc:
         lines.append(f"Плохо описанные задачи в спринте ({len(bad_desc)}): {_keys_line(bad_desc)}")
     if not sprint_sigs:
@@ -75,10 +101,18 @@ def render_summary(report: ReportData) -> str:
     # ── Следующий спринт ────────────────────────────────────────────────────
     lines.append("## Следующий спринт")
     next_sigs = [s for s in report.signals if s.scope == Scope.NEXT_SPRINT]
-    not_ready = [s for s in next_sigs if s.id in {
-        "missing_description", "weak_description", "missing_acceptance_criteria",
-        "missing_epic_or_parent", "missing_labels",
-    }]
+    not_ready = [
+        s
+        for s in next_sigs
+        if s.id
+        in {
+            "missing_description",
+            "weak_description",
+            "missing_acceptance_criteria",
+            "missing_epic_or_parent",
+            "missing_labels",
+        }
+    ]
     priority_conflict = [s for s in next_sigs if s.id == "priority_order_conflict"]
 
     if not_ready:
@@ -95,22 +129,33 @@ def render_summary(report: ReportData) -> str:
     backlog_sigs = [s for s in report.signals if s.scope == Scope.BACKLOG]
     stale = [s for s in backlog_sigs if s.id == "stale_backlog_60_days"]
     stale_hp = [s for s in backlog_sigs if s.id == "high_priority_stale_backlog"]
-    backlog_no_desc = [s for s in backlog_sigs if s.id in {
-        "missing_description", "weak_description", "missing_acceptance_criteria",
-    }]
+    backlog_no_desc = [
+        s
+        for s in backlog_sigs
+        if s.id
+        in {
+            "missing_description",
+            "weak_description",
+            "missing_acceptance_criteria",
+        }
+    ]
 
     if stale_hp:
-        lines.append(f"КРИТИЧНО — высокоприоритетные задачи давно без движения ({len(stale_hp)}): {_keys_line(stale_hp)}")
+        lines.append(
+            f"КРИТИЧНО — высокоприоритетные задачи давно без движения ({len(stale_hp)}): {_keys_line(stale_hp)}"
+        )
     if stale:
         shown, rest = _top_keys(stale, 5)
         line = f"Протухло (60+ дней без обновлений): {len(stale)} задач"
         if shown:
-            line += f" — например {', '.join(shown)}"
+            line += f" — например {', '.join(_issue_link(s) for s in shown)}"
         if rest:
             line += f" и ещё {rest}"
         lines.append(line)
     if backlog_no_desc:
-        lines.append(f"Без описания/критериев ({len(backlog_no_desc)}): {_keys_line(backlog_no_desc)}")
+        lines.append(
+            f"Без описания/критериев ({len(backlog_no_desc)}): {_keys_line(backlog_no_desc)}"
+        )
     if not backlog_sigs:
         lines.append("— Бэклог без сильных запахов")
     lines.append("")
@@ -122,25 +167,40 @@ def render_summary(report: ReportData) -> str:
     to_backlog = [s for s in change_sigs if s.id == "sprint_to_backlog"]
     to_sprint = [s for s in change_sigs if s.id == "backlog_to_sprint"]
     cancelled = [s for s in change_sigs if s.id == "cancelled_issue"]
-    field_changes = [s for s in change_sigs if s.id not in {
-        "new_issue", "sprint_to_backlog", "backlog_to_sprint", "cancelled_issue",
-    }]
+    field_changes = [
+        s
+        for s in change_sigs
+        if s.id
+        not in {
+            "new_issue",
+            "sprint_to_backlog",
+            "backlog_to_sprint",
+            "cancelled_issue",
+        }
+    ]
 
     if new_issues:
         lines.append(f"Новые задачи ({len(new_issues)}):")
-        for s in new_issues[:5]:
-            summary = s.evidence.get("summary", "")
-            lines.append(f"  - {s.issue_key}: {summary[:80]}")
-        if len(new_issues) > 5:
-            lines.append(f"  ... и ещё {len(new_issues) - 5}")
+        for s in new_issues[:8]:
+            lines.append(f"  - {_issue_link(s)}")
+        if len(new_issues) > 8:
+            lines.append(f"  ... и ещё {len(new_issues) - 8}")
     if to_backlog:
-        lines.append(f"Вернулись из спринта в бэклог ({len(to_backlog)}): {_keys_line(to_backlog)}")
+        lines.append(f"Вернулись из спринта в бэклог ({len(to_backlog)}):")
+        for s in to_backlog[:5]:
+            lines.append(f"  - {_issue_link(s)}")
     if to_sprint:
-        lines.append(f"Переехали в спринт из бэклога ({len(to_sprint)}): {_keys_line(to_sprint)}")
+        lines.append(f"Переехали в спринт из бэклога ({len(to_sprint)}):")
+        for s in to_sprint[:8]:
+            lines.append(f"  - {_issue_link(s)}")
     if cancelled:
-        lines.append(f"Отменены/закрыты ({len(cancelled)}): {_keys_line(cancelled)}")
+        lines.append(f"Отменены/закрыты ({len(cancelled)}):")
+        for s in cancelled[:5]:
+            lines.append(f"  - {_issue_link(s)}")
     if field_changes:
-        lines.append(f"Изменения приоритета/ответственного/меток ({len(field_changes)}): {_keys_line(field_changes)}")
+        lines.append(
+            f"Изменения приоритета/ответственного/меток ({len(field_changes)}): {_keys_line(field_changes)}"
+        )
     if not change_sigs:
         lines.append("— Изменений не зафиксировано")
     lines.append("")
@@ -152,7 +212,7 @@ def render_summary(report: ReportData) -> str:
         for s in unanswered[:6]:
             age = s.evidence.get("comment_age_days", "?")
             excerpt = str(s.evidence.get("last_comment", ""))[:100].replace("\n", " ")
-            lines.append(f"  - {s.issue_key}: комментарий {age} дн. назад — «{excerpt}»")
+            lines.append(f"  - {_issue_link(s)}: комментарий {age} дн. назад — «{excerpt}»")
         if len(unanswered) > 6:
             lines.append(f"  ... и ещё {len(unanswered) - 6}")
         lines.append("")
@@ -162,8 +222,12 @@ def render_summary(report: ReportData) -> str:
     if not report.actions:
         lines.append("— Ничего срочного")
     for index, action in enumerate(report.actions, start=1):
-        keys = ", ".join(action.issue_keys)
-        suffix = f" ({keys})" if keys else ""
+        # Build linked issue keys from signals if possible
+        key_parts: list[str] = []
+        for k in action.issue_keys:
+            found_sig = _key_to_signal.get(k)
+            key_parts.append(_issue_link(found_sig) if found_sig is not None else k)
+        suffix = f" ({', '.join(key_parts)})" if key_parts else ""
         lines.append(f"{index}. {action.priority}: {action.title}{suffix}")
     lines.append("")
 

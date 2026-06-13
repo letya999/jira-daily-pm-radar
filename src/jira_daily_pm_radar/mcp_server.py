@@ -54,7 +54,10 @@ def main() -> None:
             project=project, board_id=board_id, out_dir=Path(out_dir), mock=mock
         )
         html = write_report(report, Path(out_dir))
-        return {"summary": render_summary(report).replace("{html_report_path}", str(html)), "report_path": str(html)}
+        return {
+            "summary": render_summary(report).replace("{html_report_path}", str(html)),
+            "report_path": str(html),
+        }
 
     @mcp.tool()
     async def backlog_report(
@@ -69,7 +72,10 @@ def main() -> None:
             project=project, board_id=board_id, out_dir=Path(out_dir), mock=mock
         )
         html = write_report(report, Path(out_dir))
-        return {"summary": render_summary(report).replace("{html_report_path}", str(html)), "report_path": str(html)}
+        return {
+            "summary": render_summary(report).replace("{html_report_path}", str(html)),
+            "report_path": str(html),
+        }
 
     @mcp.tool()
     async def issue_context(issue_key: str, mock: bool = False) -> dict[str, Any]:

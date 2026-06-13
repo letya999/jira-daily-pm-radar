@@ -71,6 +71,10 @@ class RadarAnalyzer:
         issue: Issue | None = None,
         evidence: dict[str, Any] | None = None,
     ) -> Signal:
+        ev = dict(evidence) if evidence else {}
+        if issue:
+            ev.setdefault("summary", issue.summary)
+            ev.setdefault("url", issue.url)
         return Signal(
             id=signal_id,
             severity=severity,
@@ -79,7 +83,7 @@ class RadarAnalyzer:
             title=title,
             reason=reason,
             recommended_action=action,
-            evidence=evidence or {},
+            evidence=ev,
         )
 
     def _last_change_for_field(self, issue: Issue, field_names: set[str]) -> ChangeLogEntry | None:

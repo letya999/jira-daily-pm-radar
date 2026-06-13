@@ -18,21 +18,16 @@ It answers:
 
 ## Install & Run
 
-This skill can be executed directly via Python (`uvx`) or Node (`npx` / `bunx`). The MCP server provides access to Jira reports.
+This skill runs from the local project checkout via `uv`. The package is NOT published to npm or PyPI.
 
-**Option 1: Using `uvx` (Recommended for Python users)**
+**Running the MCP server:**
 ```text
-uvx jira-daily-pm-radar mcp
+uv run --directory <PROJECT_DIR> --extra mcp jira-radar-mcp
 ```
 
-**Option 2: Using `npx` (Recommended for Node/Claude users)**
+**Running CLI:**
 ```text
-npx -y jira-daily-pm-radar-mcp
-```
-
-**Option 3: Using `bunx`**
-```text
-bunx jira-daily-pm-radar-mcp
+uv run --directory <PROJECT_DIR> jira-radar daily --project <PROJECT_KEY> --board-id <BOARD_ID> --since yesterday --out reports/
 ```
 
 ## Agent Installation
@@ -44,11 +39,22 @@ $skill-installer install https://github.com/letya999/jira-daily-pm-radar/tree/ma
 
 ## MCP client config
 
-Use `skills/jira-daily-pm-radar/references/mcp_config_template.json` as a parameterized template and replace placeholders.
+Use `uv run` with `--directory` pointing to the project checkout.
 
-Common launcher configurations:
-- **Command**: `npx`
-- **Args**: `["-y", "jira-daily-pm-radar-mcp"]`
+Example config entry (for `mcp_config.json`):
+```json
+{
+  "command": "<path_to_uv_exe>",
+  "args": ["run", "--directory", "<PROJECT_DIR>", "--extra", "mcp", "jira-radar-mcp"],
+  "env": {
+    "JIRA_BASE_URL": "<YOUR_JIRA_URL>",
+    "JIRA_EMAIL": "<YOUR_JIRA_EMAIL>",
+    "JIRA_API_TOKEN": "<YOUR_JIRA_API_TOKEN>"
+  }
+}
+```
+
+Do NOT use `npx` or `uvx` — the package is not published to registries.
 
 
 Credential sources (environment variables):
@@ -107,6 +113,8 @@ If CLI and MCP are both available, prefer CLI for daily/sprint/backlog reports a
 
 Read `summary.md` from the report directory and deliver it **as-is** to the PM — do not rephrase, do not summarize the summary.
 
+The summary already contains markdown links with task names and Jira URLs. Preserve them.
+
 Then add a brief natural-language lead-in in the same language the PM used, for example:
 
 > «Проверил Jira по PROJECT. Вот что нашёл:»
@@ -117,6 +125,9 @@ Highlight to the PM explicitly:
 - issues that returned from sprint to backlog
 - new tasks that arrived since yesterday
 - possible unanswered comments
+
+When referencing issues in your lead-in or highlights, ALWAYS use inline markdown links with the task name:
+`[TWSC-123 «Task name»](https://jira.example.com/browse/TWSC-123)` — never just the issue key.
 
 Point the PM to the HTML report for the full picture:
 > «Полный отчёт: <path from summary>»

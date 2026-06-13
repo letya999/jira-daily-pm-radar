@@ -1,10 +1,14 @@
 {
   "mcpServers": {
     "jira-daily-pm-radar": {
-      "command": "uvx",
+      "command": "<path_to_uv_exe>",
       "args": [
-        "jira-daily-pm-radar",
-        "mcp"
+        "run",
+        "--directory",
+        "<PROJECT_DIR>",
+        "--extra",
+        "mcp",
+        "jira-radar-mcp"
       ],
       "env": {
         "JIRA_BASE_URL": "<YOUR_JIRA_URL>",
