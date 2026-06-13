@@ -16,10 +16,28 @@ It answers:
 5. What in the backlog smells?
 6. What should the PM do today?
 
-## Install
+## Install & Run
 
-Skill definition is installed via `$skill-installer`. MCP runtime can be provided by the `uv` Python package manager.
+This skill can be executed directly via Python (`uvx`) or Node (`npx` / `bunx`). The MCP server provides access to Jira reports.
 
+**Option 1: Using `uvx` (Recommended for Python users)**
+```text
+uvx jira-daily-pm-radar mcp
+```
+
+**Option 2: Using `npx` (Recommended for Node/Claude users)**
+```text
+npx -y jira-daily-pm-radar-mcp
+```
+
+**Option 3: Using `bunx`**
+```text
+bunx jira-daily-pm-radar-mcp
+```
+
+## Agent Installation
+
+If you are an AI agent configuring this skill, use the following definition path:
 ```text
 $skill-installer install https://github.com/letya999/jira-daily-pm-radar/tree/main/skills/jira-daily-pm-radar
 ```
@@ -28,8 +46,10 @@ $skill-installer install https://github.com/letya999/jira-daily-pm-radar/tree/ma
 
 Use `skills/jira-daily-pm-radar/references/mcp_config_template.json` as a parameterized template and replace placeholders.
 
-Common launcher choices:
-- `uv run jira-radar-mcp` (if run locally in the repository)
+Common launcher configurations:
+- **Command**: `npx`
+- **Args**: `["-y", "jira-daily-pm-radar-mcp"]`
+
 
 Credential sources (environment variables):
 - `JIRA_URL`: The base URL of your Jira instance.

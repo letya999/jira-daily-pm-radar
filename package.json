@@ -1,0 +1,17 @@
+{
+  "name": "jira-daily-pm-radar-mcp",
+  "version": "0.1.0",
+  "description": "Daily PM radar for Jira: changes, stuck sprint work, backlog smells, poor issue hygiene, and HTML reports.",
+  "bin": {
+    "jira-radar-mcp": "./bin/mcp-launcher.js"
+  },
+  "scripts": {
+    "start": "node ./bin/mcp-launcher.js"
+  },
+  "author": "Artem Letyushev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/letya999/jira-daily-pm-radar.git"
+  }
+}

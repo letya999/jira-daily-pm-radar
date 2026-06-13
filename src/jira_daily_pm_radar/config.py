@@ -7,9 +7,7 @@ import yaml
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-DEFAULT_CONFIG_DIR = (
-    Path(__file__).resolve().parents[2] / "skills" / "jira-daily-pm-radar" / "config"
-)
+DEFAULT_CONFIG_DIR = Path(__file__).resolve().parent / "config"
 
 
 class Settings(BaseSettings):

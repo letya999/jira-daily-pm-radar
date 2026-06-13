@@ -10,8 +10,7 @@ from jira_daily_pm_radar.analyzer import distribution
 from jira_daily_pm_radar.models import ReportData, Scope, Signal
 from jira_daily_pm_radar.time_utils import safe_filename_datetime
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-TEMPLATES_DIR = PROJECT_ROOT / "skills" / "jira-daily-pm-radar" / "assets"
+TEMPLATES_DIR = Path(__file__).resolve().parent / "assets"
 
 
 def model_dump_jsonable(value: Any) -> Any:
