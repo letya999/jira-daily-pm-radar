@@ -38,9 +38,22 @@ def _issue_link(signal: Signal) -> str:
     return label
 
 
+def _dedup(signals: list[Signal]) -> list[Signal]:
+    """One signal per unique issue_key (first occurrence wins)."""
+    seen: set[str] = set()
+    out: list[Signal] = []
+    for s in signals:
+        k = s.issue_key or ""
+        if k not in seen:
+            seen.add(k)
+            out.append(s)
+    return out
+
+
 def _top_keys(signals: list[Signal], limit: int = 8) -> tuple[list[Signal], int]:
-    shown = [s for s in signals if s.issue_key][:limit]
-    rest = max(0, sum(1 for s in signals if s.issue_key) - len(shown))
+    unique = _dedup(signals)
+    shown = unique[:limit]
+    rest = max(0, len(unique) - len(shown))
     return shown, rest
 
 
@@ -80,15 +93,17 @@ def render_summary(report: ReportData) -> str:
     ]
 
     if stuck:
-        lines.append(f"Зависшие задачи ({len(stuck)}):")
-        for s in stuck[:8]:
+        stuck_u = _dedup(stuck)
+        lines.append(f"Зависшие задачи ({len(stuck_u)}):")
+        for s in stuck_u[:8]:
             days = s.evidence.get("days_in_status") or s.evidence.get(
                 "days_after_sprint_start", "?"
             )
             lines.append(f"  - {_issue_link(s)}: {s.evidence.get('status', '')} уже {days} дн.")
     if no_activity:
-        lines.append(f"Высокий приоритет без активности ({len(no_activity)}):")
-        for s in no_activity[:5]:
+        no_activity_u = _dedup(no_activity)
+        lines.append(f"Высокий приоритет без активности ({len(no_activity_u)}):")
+        for s in no_activity_u[:5]:
             lines.append(
                 f"  - {_issue_link(s)}: {s.evidence.get('priority', '')} — не обновлялась {s.evidence.get('updated_days_ago', '?')} дн."
             )
@@ -146,7 +161,7 @@ def render_summary(report: ReportData) -> str:
         )
     if stale:
         shown, rest = _top_keys(stale, 5)
-        line = f"Протухло (60+ дней без обновлений): {len(stale)} задач"
+        line = f"Протухло (60+ дней без обновлений): {len(_dedup(stale))} задач"
         if shown:
             line += f" — например {', '.join(_issue_link(s) for s in shown)}"
         if rest:
@@ -272,7 +287,8 @@ def write_report(report: ReportData, out_dir: Path) -> Path:
             "backlog": distribution(report.backlog, "priority"),
         },
     )
-    summary = render_summary(report)
+    html_path = run_dir / "report.html"
+    summary = render_summary(report).replace("{html_report_path}", str(html_path))
     files = {
         "report.html": html,
         "summary.md": summary,
