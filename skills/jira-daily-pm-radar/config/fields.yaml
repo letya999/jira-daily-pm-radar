@@ -1,0 +1,23 @@
+required_fields:
+  - summary
+  - description
+  - status
+  - resolution
+  - priority
+  - issuetype
+  - assignee
+  - reporter
+  - created
+  - updated
+  - labels
+  - components
+  - parent
+  - subtasks
+
+optional_fields:
+  epic_link: customfield_10014
+  story_points: customfield_10016
+  rank: customfield_10019
+  sprint: customfield_10020
+  team: customfield_10001
+  blocked_reason: customfield_12345

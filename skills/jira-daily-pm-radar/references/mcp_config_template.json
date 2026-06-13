@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "jira-daily-pm-radar": {
+      "command": "uvx",
+      "args": [
+        "jira-daily-pm-radar",
+        "mcp"
+      ],
+      "env": {
+        "JIRA_URL": "<YOUR_JIRA_URL>",
+        "JIRA_EMAIL": "<YOUR_JIRA_EMAIL>",
+        "JIRA_TOKEN": "<YOUR_JIRA_API_TOKEN>"
+      }
+    }
+  }
+}

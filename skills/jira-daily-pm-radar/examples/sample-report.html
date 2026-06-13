@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jira Daily PM Radar — DEMO</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; color: #202124; background: #fafafa; }
+    header { margin-bottom: 24px; }
+    h1 { margin-bottom: 4px; }
+    .muted { color: #666; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 24px; }
+    .card { background: white; border: 1px solid #ddd; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+    .count { font-size: 28px; font-weight: bold; }
+    .critical { color: #b42318; }
+    .warning { color: #b54708; }
+    .info { color: #175cd3; }
+    table { width: 100%; border-collapse: collapse; background: white; margin: 12px 0 24px; }
+    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    code { background: #f1f3f4; padding: 2px 4px; border-radius: 4px; }
+    section { margin: 28px 0; }
+    .signal { border-left: 4px solid #ccc; padding: 10px 14px; margin: 8px 0; background: white; }
+    .signal.critical { border-color: #b42318; }
+    .signal.warning { border-color: #b54708; }
+    .signal.info { border-color: #175cd3; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Jira Daily PM Radar — DEMO</h1>
+  <div class="muted">Generated: 2026-06-13 03:02:05.194127+05:00 · Since: yesterday</div>
+</header>
+
+<div class="grid">
+  <div class="card"><div class="muted">Critical</div><div class="count critical">5</div></div>
+  <div class="card"><div class="muted">Warnings</div><div class="count warning">10</div></div>
+  <div class="card"><div class="muted">Info</div><div class="count info">6</div></div>
+</div>
+
+<section>
+  <h2>Что сделать сегодня</h2>
+  <table>
+    <tr><th>Priority</th><th>Action</th><th>Issues</th><th>Reason</th></tr>
+    
+    <tr>
+      <td><strong>P1</strong></td>
+      <td>Ask current owner for real state and move/update the issue if needed.</td>
+      <td><code>DEMO-101</code> <code>DEMO-102</code> <code>DEMO-103</code> </td>
+      <td>3 signal(s): DEMO-101 may be stuck in In Progress</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P1</strong></td>
+      <td>Raise on daily and clarify blocker/next action.</td>
+      <td><code>DEMO-101</code> <code>DEMO-103</code> </td>
+      <td>2 signal(s): High priority DEMO-101 has no recent activity</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P2</strong></td>
+      <td>Attach to epic/parent or explicitly mark as standalone.</td>
+      <td><code>DEMO-201</code> <code>DEMO-301</code> </td>
+      <td>2 signal(s): DEMO-201 has no epic/parent</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P2</strong></td>
+      <td>Add problem, expected result, and acceptance criteria.</td>
+      <td><code>DEMO-202</code> <code>DEMO-301</code> </td>
+      <td>2 signal(s): DEMO-202 has no description</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P3</strong></td>
+      <td>Add domain/work type labels if they are used in the team.</td>
+      <td><code>DEMO-202</code> <code>DEMO-301</code> </td>
+      <td>2 signal(s): DEMO-202 has no labels</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P3</strong></td>
+      <td>Add tech/product classification or update label policy.</td>
+      <td><code>DEMO-202</code> <code>DEMO-301</code> </td>
+      <td>2 signal(s): DEMO-202 has no tech/product classification</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P1</strong></td>
+      <td>Ask why it returned and whether scope/priority changed.</td>
+      <td><code>DEMO-303</code> </td>
+      <td>1 signal(s): Issue DEMO-303 returned from sprint to backlog</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P3</strong></td>
+      <td>Triage the new issue and decide whether it belongs to sprint, next sprint, or backlog.</td>
+      <td><code>DEMO-401</code> </td>
+      <td>1 signal(s): New issue DEMO-401</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P3</strong></td>
+      <td>Check if this item is really planned for the sprint.</td>
+      <td><code>DEMO-103</code> </td>
+      <td>1 signal(s): DEMO-103 is still To Do after sprint start</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P3</strong></td>
+      <td>Clarify problem, scope, and expected result.</td>
+      <td><code>DEMO-201</code> </td>
+      <td>1 signal(s): DEMO-201 has weak description</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P2</strong></td>
+      <td>Add acceptance criteria or expected result before planning.</td>
+      <td><code>DEMO-201</code> </td>
+      <td>1 signal(s): DEMO-201 has no visible acceptance criteria</td>
+    </tr>
+    
+    <tr>
+      <td><strong>P2</strong></td>
+      <td>Close, park, reprioritize, or refresh the issue.</td>
+      <td><code>DEMO-301</code> </td>
+      <td>1 signal(s): DEMO-301 is stale in backlog</td>
+    </tr>
+    
+  </table>
+</section>
+
+<section>
+  <h2>Что изменилось / сигналы</h2>
+  
+  <div class="signal warning">
+    <strong>[warning] Issue DEMO-303 returned from sprint to backlog</strong>
+    <code>DEMO-303</code>
+    <div>Sprint field was removed in changelog.</div>
+    <div class="muted">Action: Ask why it returned and whether scope/priority changed.</div>
+  </div>
+  
+  <div class="signal info">
+    <strong>[info] New issue DEMO-401</strong>
+    <code>DEMO-401</code>
+    <div>Issue appeared in Jira changes since selected period.</div>
+    <div class="muted">Action: Triage the new issue and decide whether it belongs to sprint, next sprint, or backlog.</div>
+  </div>
+  
+  <div class="signal critical">
+    <strong>[critical] DEMO-101 may be stuck in In Progress</strong>
+    <code>DEMO-101</code>
+    <div>Issue stayed in status for 4 days, threshold is 3.</div>
+    <div class="muted">Action: Ask current owner for real state and move/update the issue if needed.</div>
+  </div>
+  
+  <div class="signal critical">
+    <strong>[critical] High priority DEMO-101 has no recent activity</strong>
+    <code>DEMO-101</code>
+    <div>Updated 4 days ago.</div>
+    <div class="muted">Action: Raise on daily and clarify blocker/next action.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-102 may be stuck in QA</strong>
+    <code>DEMO-102</code>
+    <div>Issue stayed in status for 3 days, threshold is 2.</div>
+    <div class="muted">Action: Ask current owner for real state and move/update the issue if needed.</div>
+  </div>
+  
+  <div class="signal critical">
+    <strong>[critical] DEMO-103 may be stuck in To Do</strong>
+    <code>DEMO-103</code>
+    <div>Issue stayed in status for 5 days, threshold is 2.</div>
+    <div class="muted">Action: Ask current owner for real state and move/update the issue if needed.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-103 is still To Do after sprint start</strong>
+    <code>DEMO-103</code>
+    <div>Sprint started 5 days ago.</div>
+    <div class="muted">Action: Check if this item is really planned for the sprint.</div>
+  </div>
+  
+  <div class="signal critical">
+    <strong>[critical] High priority DEMO-103 has no recent activity</strong>
+    <code>DEMO-103</code>
+    <div>Updated 5 days ago.</div>
+    <div class="muted">Action: Raise on daily and clarify blocker/next action.</div>
+  </div>
+  
+  <div class="signal info">
+    <strong>[info] DEMO-201 has weak description</strong>
+    <code>DEMO-201</code>
+    <div>Description length is 14, minimum is 50.</div>
+    <div class="muted">Action: Clarify problem, scope, and expected result.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-201 has no visible acceptance criteria</strong>
+    <code>DEMO-201</code>
+    <div>No configured acceptance criteria markers found in description.</div>
+    <div class="muted">Action: Add acceptance criteria or expected result before planning.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-201 has no epic/parent</strong>
+    <code>DEMO-201</code>
+    <div>Issue type Task requires epic/parent by configuration.</div>
+    <div class="muted">Action: Attach to epic/parent or explicitly mark as standalone.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-202 has no description</strong>
+    <code>DEMO-202</code>
+    <div>Description is empty.</div>
+    <div class="muted">Action: Add problem, expected result, and acceptance criteria.</div>
+  </div>
+  
+  <div class="signal info">
+    <strong>[info] DEMO-202 has no labels</strong>
+    <code>DEMO-202</code>
+    <div>Labels list is empty.</div>
+    <div class="muted">Action: Add domain/work type labels if they are used in the team.</div>
+  </div>
+  
+  <div class="signal info">
+    <strong>[info] DEMO-202 has no tech/product classification</strong>
+    <code>DEMO-202</code>
+    <div>None of required labels found: [&#39;product&#39;, &#39;tech&#39;].</div>
+    <div class="muted">Action: Add tech/product classification or update label policy.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-301 is stale in backlog</strong>
+    <code>DEMO-301</code>
+    <div>Issue was not updated for 75 days.</div>
+    <div class="muted">Action: Close, park, reprioritize, or refresh the issue.</div>
+  </div>
+  
+  <div class="signal critical">
+    <strong>[critical] High priority DEMO-302 is stale in backlog</strong>
+    <code>DEMO-302</code>
+    <div>High priority issue was not updated for 20 days.</div>
+    <div class="muted">Action: Review priority or move to active planning.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-301 has no description</strong>
+    <code>DEMO-301</code>
+    <div>Description is empty.</div>
+    <div class="muted">Action: Add problem, expected result, and acceptance criteria.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-301 has no epic/parent</strong>
+    <code>DEMO-301</code>
+    <div>Issue type Task requires epic/parent by configuration.</div>
+    <div class="muted">Action: Attach to epic/parent or explicitly mark as standalone.</div>
+  </div>
+  
+  <div class="signal info">
+    <strong>[info] DEMO-301 has no labels</strong>
+    <code>DEMO-301</code>
+    <div>Labels list is empty.</div>
+    <div class="muted">Action: Add domain/work type labels if they are used in the team.</div>
+  </div>
+  
+  <div class="signal info">
+    <strong>[info] DEMO-301 has no tech/product classification</strong>
+    <code>DEMO-301</code>
+    <div>None of required labels found: [&#39;product&#39;, &#39;tech&#39;].</div>
+    <div class="muted">Action: Add tech/product classification or update label policy.</div>
+  </div>
+  
+  <div class="signal warning">
+    <strong>[warning] DEMO-103 may have an unanswered question</strong>
+    <code>DEMO-103</code>
+    <div>Last comment looks like a question/mention and is 3 days old.</div>
+    <div class="muted">Action: Check comment thread and close the question or update the issue.</div>
+  </div>
+  
+</section>
+
+<section>
+  <h2>Распределение issue types</h2>
+  <table>
+    <tr><th>Scope</th><th>Distribution</th></tr>
+    
+    <tr><td>current_sprint</td><td>{&#39;Task&#39;: 3}</td></tr>
+    
+    <tr><td>next_sprint</td><td>{&#39;Task&#39;: 2}</td></tr>
+    
+    <tr><td>backlog</td><td>{&#39;Task&#39;: 3}</td></tr>
+    
+  </table>
+</section>
+
+<section>
+  <h2>Распределение priorities</h2>
+  <table>
+    <tr><th>Scope</th><th>Distribution</th></tr>
+    
+    <tr><td>current_sprint</td><td>{&#39;High&#39;: 2, &#39;Medium&#39;: 1}</td></tr>
+    
+    <tr><td>next_sprint</td><td>{&#39;High&#39;: 1, &#39;Medium&#39;: 1}</td></tr>
+    
+    <tr><td>backlog</td><td>{&#39;Low&#39;: 1, &#39;High&#39;: 1, &#39;Medium&#39;: 1}</td></tr>
+    
+  </table>
+</section>
+
+<section>
+  <h2>Ограничения</h2>
+  <ul>
+    <li>Possible unanswered comments are heuristic signals, not proof.</li><li>Rank/priority order depends on Jira board ordering and available Rank field.</li><li>Returned-from-sprint detection is best with changelog plus daily snapshots.</li>
+  </ul>
+</section>
+</body>
+</html>

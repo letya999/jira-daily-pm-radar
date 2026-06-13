@@ -1,0 +1,15 @@
+cancelled_statuses:
+  - Cancelled
+  - Canceled
+  - Rejected
+  - Won't Do
+  - Duplicate
+
+blocked_statuses:
+  - Blocked
+
+review_statuses:
+  - Review
+  - Code Review
+  - QA
+  - Testing

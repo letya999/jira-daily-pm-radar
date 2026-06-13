@@ -1,0 +1,19 @@
+known_labels:
+  - tech
+  - product
+  - backend
+  - frontend
+  - mobile
+  - antifraud
+  - payments
+  - onboarding
+  - analytics
+  - experiment
+  - bugfix
+  - cleanup
+  - blocked
+  - blocker
+
+work_type_labels:
+  - tech
+  - product

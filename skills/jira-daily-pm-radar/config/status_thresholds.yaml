@@ -1,0 +1,22 @@
+current_sprint:
+  todo_after_sprint_started_days: 2
+
+  max_days_in_status:
+    To Do: 2
+    Open: 2
+    In Progress: 3
+    Code Review: 2
+    Review: 2
+    QA: 2
+    Testing: 2
+    Blocked: 1
+
+  stale_activity_days:
+    default: 3
+    high_priority: 2
+
+  sprint_progress_risk:
+    after_50_percent:
+      warn_if_todo_percent_more_than: 40
+    after_70_percent:
+      warn_if_high_priority_not_done: true

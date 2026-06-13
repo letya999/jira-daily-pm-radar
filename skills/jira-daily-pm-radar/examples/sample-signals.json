@@ -1,0 +1,282 @@
+[
+  {
+    "id": "sprint_to_backlog",
+    "severity": "warning",
+    "scope": "backlog",
+    "issue_key": "DEMO-303",
+    "title": "Issue DEMO-303 returned from sprint to backlog",
+    "reason": "Sprint field was removed in changelog.",
+    "recommended_action": "Ask why it returned and whether scope/priority changed.",
+    "evidence": {
+      "from": "Sprint 42",
+      "to": null,
+      "at": "2026-06-12T17:02:05.193567+05:00"
+    }
+  },
+  {
+    "id": "new_issue",
+    "severity": "info",
+    "scope": "unknown",
+    "issue_key": "DEMO-401",
+    "title": "New issue DEMO-401",
+    "reason": "Issue appeared in Jira changes since selected period.",
+    "recommended_action": "Triage the new issue and decide whether it belongs to sprint, next sprint, or backlog.",
+    "evidence": {
+      "created_at": "2026-06-13T00:02:05.193567+05:00",
+      "summary": "New issue since yesterday"
+    }
+  },
+  {
+    "id": "stuck_in_status",
+    "severity": "critical",
+    "scope": "current_sprint",
+    "issue_key": "DEMO-101",
+    "title": "DEMO-101 may be stuck in In Progress",
+    "reason": "Issue stayed in status for 4 days, threshold is 3.",
+    "recommended_action": "Ask current owner for real state and move/update the issue if needed.",
+    "evidence": {
+      "status": "In Progress",
+      "days_in_status": 4,
+      "threshold": 3,
+      "assignee": "Ivan Petrov"
+    }
+  },
+  {
+    "id": "high_priority_no_recent_activity",
+    "severity": "critical",
+    "scope": "current_sprint",
+    "issue_key": "DEMO-101",
+    "title": "High priority DEMO-101 has no recent activity",
+    "reason": "Updated 4 days ago.",
+    "recommended_action": "Raise on daily and clarify blocker/next action.",
+    "evidence": {
+      "updated_days_ago": 4,
+      "priority": "High"
+    }
+  },
+  {
+    "id": "stuck_in_status",
+    "severity": "warning",
+    "scope": "current_sprint",
+    "issue_key": "DEMO-102",
+    "title": "DEMO-102 may be stuck in QA",
+    "reason": "Issue stayed in status for 3 days, threshold is 2.",
+    "recommended_action": "Ask current owner for real state and move/update the issue if needed.",
+    "evidence": {
+      "status": "QA",
+      "days_in_status": 3,
+      "threshold": 2,
+      "assignee": "Ivan Petrov"
+    }
+  },
+  {
+    "id": "stuck_in_status",
+    "severity": "critical",
+    "scope": "current_sprint",
+    "issue_key": "DEMO-103",
+    "title": "DEMO-103 may be stuck in To Do",
+    "reason": "Issue stayed in status for 5 days, threshold is 2.",
+    "recommended_action": "Ask current owner for real state and move/update the issue if needed.",
+    "evidence": {
+      "status": "To Do",
+      "days_in_status": 5,
+      "threshold": 2,
+      "assignee": "Ivan Petrov"
+    }
+  },
+  {
+    "id": "todo_after_sprint_started",
+    "severity": "warning",
+    "scope": "current_sprint",
+    "issue_key": "DEMO-103",
+    "title": "DEMO-103 is still To Do after sprint start",
+    "reason": "Sprint started 5 days ago.",
+    "recommended_action": "Check if this item is really planned for the sprint.",
+    "evidence": {
+      "days_after_sprint_start": 5,
+      "sprint": "Sprint 42"
+    }
+  },
+  {
+    "id": "high_priority_no_recent_activity",
+    "severity": "critical",
+    "scope": "current_sprint",
+    "issue_key": "DEMO-103",
+    "title": "High priority DEMO-103 has no recent activity",
+    "reason": "Updated 5 days ago.",
+    "recommended_action": "Raise on daily and clarify blocker/next action.",
+    "evidence": {
+      "updated_days_ago": 5,
+      "priority": "High"
+    }
+  },
+  {
+    "id": "weak_description",
+    "severity": "info",
+    "scope": "next_sprint",
+    "issue_key": "DEMO-201",
+    "title": "DEMO-201 has weak description",
+    "reason": "Description length is 14, minimum is 50.",
+    "recommended_action": "Clarify problem, scope, and expected result.",
+    "evidence": {
+      "description_length": 14
+    }
+  },
+  {
+    "id": "missing_acceptance_criteria",
+    "severity": "warning",
+    "scope": "next_sprint",
+    "issue_key": "DEMO-201",
+    "title": "DEMO-201 has no visible acceptance criteria",
+    "reason": "No configured acceptance criteria markers found in description.",
+    "recommended_action": "Add acceptance criteria or expected result before planning.",
+    "evidence": {
+      "markers": [
+        "acceptance criteria",
+        "критерии приемки",
+        "ac:",
+        "ожидаемый результат",
+        "expected result"
+      ]
+    }
+  },
+  {
+    "id": "missing_epic_or_parent",
+    "severity": "warning",
+    "scope": "next_sprint",
+    "issue_key": "DEMO-201",
+    "title": "DEMO-201 has no epic/parent",
+    "reason": "Issue type Task requires epic/parent by configuration.",
+    "recommended_action": "Attach to epic/parent or explicitly mark as standalone.",
+    "evidence": {
+      "issue_type": "Task"
+    }
+  },
+  {
+    "id": "missing_description",
+    "severity": "warning",
+    "scope": "next_sprint",
+    "issue_key": "DEMO-202",
+    "title": "DEMO-202 has no description",
+    "reason": "Description is empty.",
+    "recommended_action": "Add problem, expected result, and acceptance criteria.",
+    "evidence": {
+      "description_length": 0
+    }
+  },
+  {
+    "id": "missing_labels",
+    "severity": "info",
+    "scope": "next_sprint",
+    "issue_key": "DEMO-202",
+    "title": "DEMO-202 has no labels",
+    "reason": "Labels list is empty.",
+    "recommended_action": "Add domain/work type labels if they are used in the team.",
+    "evidence": {}
+  },
+  {
+    "id": "missing_tech_product_classification",
+    "severity": "info",
+    "scope": "next_sprint",
+    "issue_key": "DEMO-202",
+    "title": "DEMO-202 has no tech/product classification",
+    "reason": "None of required labels found: ['product', 'tech'].",
+    "recommended_action": "Add tech/product classification or update label policy.",
+    "evidence": {
+      "labels": [],
+      "required_any": [
+        "product",
+        "tech"
+      ]
+    }
+  },
+  {
+    "id": "stale_backlog_60_days",
+    "severity": "warning",
+    "scope": "backlog",
+    "issue_key": "DEMO-301",
+    "title": "DEMO-301 is stale in backlog",
+    "reason": "Issue was not updated for 75 days.",
+    "recommended_action": "Close, park, reprioritize, or refresh the issue.",
+    "evidence": {
+      "updated_days_ago": 75
+    }
+  },
+  {
+    "id": "high_priority_stale_backlog",
+    "severity": "critical",
+    "scope": "backlog",
+    "issue_key": "DEMO-302",
+    "title": "High priority DEMO-302 is stale in backlog",
+    "reason": "High priority issue was not updated for 20 days.",
+    "recommended_action": "Review priority or move to active planning.",
+    "evidence": {
+      "updated_days_ago": 20,
+      "priority": "High"
+    }
+  },
+  {
+    "id": "missing_description",
+    "severity": "warning",
+    "scope": "backlog",
+    "issue_key": "DEMO-301",
+    "title": "DEMO-301 has no description",
+    "reason": "Description is empty.",
+    "recommended_action": "Add problem, expected result, and acceptance criteria.",
+    "evidence": {
+      "description_length": 0
+    }
+  },
+  {
+    "id": "missing_epic_or_parent",
+    "severity": "warning",
+    "scope": "backlog",
+    "issue_key": "DEMO-301",
+    "title": "DEMO-301 has no epic/parent",
+    "reason": "Issue type Task requires epic/parent by configuration.",
+    "recommended_action": "Attach to epic/parent or explicitly mark as standalone.",
+    "evidence": {
+      "issue_type": "Task"
+    }
+  },
+  {
+    "id": "missing_labels",
+    "severity": "info",
+    "scope": "backlog",
+    "issue_key": "DEMO-301",
+    "title": "DEMO-301 has no labels",
+    "reason": "Labels list is empty.",
+    "recommended_action": "Add domain/work type labels if they are used in the team.",
+    "evidence": {}
+  },
+  {
+    "id": "missing_tech_product_classification",
+    "severity": "info",
+    "scope": "backlog",
+    "issue_key": "DEMO-301",
+    "title": "DEMO-301 has no tech/product classification",
+    "reason": "None of required labels found: ['product', 'tech'].",
+    "recommended_action": "Add tech/product classification or update label policy.",
+    "evidence": {
+      "labels": [],
+      "required_any": [
+        "product",
+        "tech"
+      ]
+    }
+  },
+  {
+    "id": "possible_unanswered_comment",
+    "severity": "warning",
+    "scope": "current_sprint",
+    "issue_key": "DEMO-103",
+    "title": "DEMO-103 may have an unanswered question",
+    "reason": "Last comment looks like a question/mention and is 3 days old.",
+    "recommended_action": "Check comment thread and close the question or update the issue.",
+    "evidence": {
+      "comment_age_days": 3,
+      "last_comment": "Do we have requirements?",
+      "author": "QA"
+    }
+  }
+]

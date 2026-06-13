@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jira Daily PM Radar — {{ report.project }}</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; color: #202124; background: #fafafa; }
+    header { margin-bottom: 24px; }
+    h1 { margin-bottom: 4px; }
+    .muted { color: #666; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 24px; }
+    .card { background: white; border: 1px solid #ddd; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+    .count { font-size: 28px; font-weight: bold; }
+    .critical { color: #b42318; }
+    .warning { color: #b54708; }
+    .info { color: #175cd3; }
+    table { width: 100%; border-collapse: collapse; background: white; margin: 12px 0 24px; }
+    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    code { background: #f1f3f4; padding: 2px 4px; border-radius: 4px; }
+    section { margin: 28px 0; }
+    .signal { border-left: 4px solid #ccc; padding: 10px 14px; margin: 8px 0; background: white; }
+    .signal.critical { border-color: #b42318; }
+    .signal.warning { border-color: #b54708; }
+    .signal.info { border-color: #175cd3; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Jira Daily PM Radar — {{ report.project }}</h1>
+  <div class="muted">Generated: {{ report.generated_at }} · Since: {{ report.since }}</div>
+</header>
+
+<div class="grid">
+  <div class="card"><div class="muted">Critical</div><div class="count critical">{{ report.critical_count }}</div></div>
+  <div class="card"><div class="muted">Warnings</div><div class="count warning">{{ report.warning_count }}</div></div>
+  <div class="card"><div class="muted">Info</div><div class="count info">{{ report.info_count }}</div></div>
+</div>
+
+<section>
+  <h2>Что сделать сегодня</h2>
+  <table>
+    <tr><th>Priority</th><th>Action</th><th>Issues</th><th>Reason</th></tr>
+    {% for action in report.actions %}
+    <tr>
+      <td><strong>{{ action.priority }}</strong></td>
+      <td>{{ action.title }}</td>
+      <td>{% for key in action.issue_keys %}<code>{{ key }}</code> {% endfor %}</td>
+      <td>{{ action.reason }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+
+<section>
+  <h2>Что изменилось / сигналы</h2>
+  {% for signal in report.signals %}
+  <div class="signal {{ signal.severity }}">
+    <strong>[{{ signal.severity }}] {{ signal.title }}</strong>
+    {% if signal.issue_key %}<code>{{ signal.issue_key }}</code>{% endif %}
+    <div>{{ signal.reason }}</div>
+    <div class="muted">Action: {{ signal.recommended_action }}</div>
+  </div>
+  {% endfor %}
+</section>
+
+<section>
+  <h2>Распределение issue types</h2>
+  <table>
+    <tr><th>Scope</th><th>Distribution</th></tr>
+    {% for scope, dist in dist_issue_type.items() %}
+    <tr><td>{{ scope }}</td><td>{{ dist }}</td></tr>
+    {% endfor %}
+  </table>
+</section>
+
+<section>
+  <h2>Распределение priorities</h2>
+  <table>
+    <tr><th>Scope</th><th>Distribution</th></tr>
+    {% for scope, dist in dist_priority.items() %}
+    <tr><td>{{ scope }}</td><td>{{ dist }}</td></tr>
+    {% endfor %}
+  </table>
+</section>
+
+<section>
+  <h2>Ограничения</h2>
+  <ul>
+    {% for limitation in report.limitations %}<li>{{ limitation }}</li>{% endfor %}
+  </ul>
+</section>
+</body>
+</html>

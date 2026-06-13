@@ -1,0 +1,39 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.7
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args: [--fix]
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+
+  - repo: local
+    hooks:
+      - id: custom-secret-env-scan
+        name: custom secret/env scanner
+        entry: uv run python scripts/check_no_secrets.py
+        language: system
+        pass_filenames: false
+
+      - id: bandit
+        name: bandit
+        entry: uv run bandit -r src
+        language: system
+        pass_filenames: false
+
+      - id: mypy
+        name: mypy
+        entry: uv run mypy src tests
+        language: system
+        pass_filenames: false
+
+      - id: tests
+        name: pytest
+        entry: uv run pytest
+        language: system
+        pass_filenames: false

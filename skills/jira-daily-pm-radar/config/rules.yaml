@@ -1,0 +1,46 @@
+description:
+  min_length: 50
+  acceptance_criteria_markers:
+    - "acceptance criteria"
+    - "критерии приемки"
+    - "AC:"
+    - "ожидаемый результат"
+    - "expected result"
+
+stale:
+  backlog_days: 60
+  high_priority_days: 14
+  very_old_days: 90
+
+epic:
+  required_for_issue_types:
+    - Story
+    - Task
+  optional_for_issue_types:
+    - Bug
+    - Sub-task
+
+labels:
+  required_any_groups:
+    work_type:
+      - tech
+      - product
+
+comments:
+  possible_unanswered_question_days: 2
+  question_mark_is_signal: true
+  mention_is_signal: true
+
+decomposition:
+  max_story_points_without_subtasks: 8
+  epic_without_children_is_problem: true
+  epic_children_stale_days: 30
+
+priority:
+  order:
+    Highest: 1
+    High: 2
+    Medium: 3
+    Low: 4
+    Lowest: 5
+    null: 99

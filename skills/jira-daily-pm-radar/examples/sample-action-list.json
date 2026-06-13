@@ -1,0 +1,105 @@
+[
+  {
+    "priority": "P1",
+    "title": "Ask current owner for real state and move/update the issue if needed.",
+    "issue_keys": [
+      "DEMO-101",
+      "DEMO-102",
+      "DEMO-103"
+    ],
+    "reason": "3 signal(s): DEMO-101 may be stuck in In Progress"
+  },
+  {
+    "priority": "P1",
+    "title": "Raise on daily and clarify blocker/next action.",
+    "issue_keys": [
+      "DEMO-101",
+      "DEMO-103"
+    ],
+    "reason": "2 signal(s): High priority DEMO-101 has no recent activity"
+  },
+  {
+    "priority": "P2",
+    "title": "Attach to epic/parent or explicitly mark as standalone.",
+    "issue_keys": [
+      "DEMO-201",
+      "DEMO-301"
+    ],
+    "reason": "2 signal(s): DEMO-201 has no epic/parent"
+  },
+  {
+    "priority": "P2",
+    "title": "Add problem, expected result, and acceptance criteria.",
+    "issue_keys": [
+      "DEMO-202",
+      "DEMO-301"
+    ],
+    "reason": "2 signal(s): DEMO-202 has no description"
+  },
+  {
+    "priority": "P3",
+    "title": "Add domain/work type labels if they are used in the team.",
+    "issue_keys": [
+      "DEMO-202",
+      "DEMO-301"
+    ],
+    "reason": "2 signal(s): DEMO-202 has no labels"
+  },
+  {
+    "priority": "P3",
+    "title": "Add tech/product classification or update label policy.",
+    "issue_keys": [
+      "DEMO-202",
+      "DEMO-301"
+    ],
+    "reason": "2 signal(s): DEMO-202 has no tech/product classification"
+  },
+  {
+    "priority": "P1",
+    "title": "Ask why it returned and whether scope/priority changed.",
+    "issue_keys": [
+      "DEMO-303"
+    ],
+    "reason": "1 signal(s): Issue DEMO-303 returned from sprint to backlog"
+  },
+  {
+    "priority": "P3",
+    "title": "Triage the new issue and decide whether it belongs to sprint, next sprint, or backlog.",
+    "issue_keys": [
+      "DEMO-401"
+    ],
+    "reason": "1 signal(s): New issue DEMO-401"
+  },
+  {
+    "priority": "P3",
+    "title": "Check if this item is really planned for the sprint.",
+    "issue_keys": [
+      "DEMO-103"
+    ],
+    "reason": "1 signal(s): DEMO-103 is still To Do after sprint start"
+  },
+  {
+    "priority": "P3",
+    "title": "Clarify problem, scope, and expected result.",
+    "issue_keys": [
+      "DEMO-201"
+    ],
+    "reason": "1 signal(s): DEMO-201 has weak description"
+  },
+  {
+    "priority": "P2",
+    "title": "Add acceptance criteria or expected result before planning.",
+    "issue_keys": [
+      "DEMO-201"
+    ],
+    "reason": "1 signal(s): DEMO-201 has no visible acceptance criteria"
+  },
+  {
+    "priority": "P2",
+    "title": "Close, park, reprioritize, or refresh the issue.",
+    "issue_keys": [
+      "DEMO-301"
+    ],
+    "reason": "1 signal(s): DEMO-301 is stale in backlog"
+  }
+]
