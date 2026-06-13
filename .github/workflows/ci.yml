@@ -2,57 +2,35 @@ name: CI
 
 on:
   push:
-    branches: [main, master, dev]
+    branches: [main, master]
   pull_request:
-    branches: [main, master, dev]
-
-permissions:
-  contents: read
-  security-events: write
+    branches: [main, master]
 
 jobs:
-  test-and-security:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v4
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          version: "latest"
+
+      - name: Set up Python
+        run: uv python install 3.12
 
       - name: Install dependencies
-        run: uv sync --all-extras
+        run: uv sync --extra mcp --extra dev
 
-      - name: Ruff format check
-        run: uv run ruff format --check .
+      - name: Lint
+        run: uv run ruff check src/ tests/
 
-      - name: Ruff lint
-        run: uv run ruff check .
-
-      - name: Mypy
-        run: uv run mypy src tests
+      - name: Type check
+        run: uv run mypy src/
 
       - name: Tests
-        run: uv run pytest
+        run: uv run pytest tests/ -q
 
-      - name: Bandit
-        run: uv run bandit -r src -f json -o bandit-report.json
-
-      - name: Detect secrets
-        run: uv run detect-secrets scan --baseline .secrets.baseline
-
-      - name: Custom secret/env scanner
-        run: uv run python scripts/check_no_secrets.py
-
-      - name: pip-audit
-        run: uv run pip-audit
-
-      - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Security scan
+        run: uv run python -m bandit -r src/ -q

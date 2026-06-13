@@ -1,5 +1,9 @@
 # Jira Daily PM Radar
 
+[![CI](https://github.com/letya999/jira-daily-pm-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/letya999/jira-daily-pm-radar/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/jira-daily-pm-radar)](https://pypi.org/project/jira-daily-pm-radar/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Ежедневный PM-радар по Jira: что изменилось со вчера, где текущий спринт завис, что в backlog уже пахнет, что плохо оформлено и что проджекту надо сделать сегодня.
 
 Проект сделан как демонстрационный **agent skill package**: внутри есть Python 3.12 CLI, async Jira client, MCP server, Open Skill-папка, HTML-отчет, security gates и mock-режим без реальной Jira.
@@ -114,15 +118,11 @@ uv run jira-radar-mcp
   - bandit
   - detect-secrets
   - custom secret/env scanner
-- GitHub Actions:
-  - ruff
-  - mypy
+- GitHub Actions CI:
+  - ruff lint
+  - mypy type check
   - pytest
-  - bandit
-  - detect-secrets
-  - gitleaks
-  - pip-audit
-- Dependabot
+  - bandit security scan
 
 Установка pre-commit:
 
