@@ -67,27 +67,27 @@ class JiraClient:
         expand: str | None = None,
     ) -> list[dict[str, Any]]:
         issues: list[dict[str, Any]] = []
-        start_at = 0
+        next_page_token: str | None = None
         field_list = list(fields or [])
         while True:
             payload: dict[str, Any] = {
                 "jql": jql,
-                "startAt": start_at,
-                "maxResults": min(max_results, 100),
+                "maxResults": min(max_results - len(issues), 100) if max_results else 100,
                 "fields": field_list,
             }
+            if next_page_token:
+                payload["nextPageToken"] = next_page_token
             if expand:
                 payload["expand"] = [expand]
-            data = await self._post("/rest/api/3/search", json=payload)
+            data = await self._post("/rest/api/3/search/jql", json=payload)
             batch = data.get("issues", [])
             if not isinstance(batch, list):
                 break
             issues.extend(batch)
             if len(issues) >= max_results:
                 return issues[:max_results]
-            total = int(data.get("total", len(issues)))
-            start_at += len(batch)
-            if not batch or start_at >= total:
+            next_page_token = data.get("nextPageToken")
+            if not next_page_token or data.get("isLast") is True:
                 return issues
         return issues
 
